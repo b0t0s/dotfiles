@@ -1,0 +1,199 @@
+## ───────────────────────────────────────────────
+## GLOBAL SETTINGS
+## ───────────────────────────────────────────────
+
+# Modifier key setup
+set $mod Mod4
+
+# Font
+font xft:Fira Code 11
+
+# Workspace naming
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+
+# Focus behavior
+focus_follows_mouse yes
+
+## ───────────────────────────────────────────────
+## WINDOW APPEARANCE
+## ───────────────────────────────────────────────
+
+new_window pixel 2
+new_float pixel 2
+hide_edge_borders both
+smart_gaps off
+gaps inner 10
+gaps outer 5
+
+# Theme colors
+client.focused          #800000 #bfbfbf #800000 #800000 #800000
+client.focused_inactive #800000 #bfbfbf #800000 #bfbfbf #bfbfbf
+client.unfocused        #800000 #bfbfbf #800000 #bfbfbf #bfbfbf
+client.urgent           #800000 #bfbfbf #800000 #bfbfbf #bfbfbf
+client.placeholder      #800000 #bfbfbf #800000 #bfbfbf #bfbfbf
+client.background       #800000
+
+## ───────────────────────────────────────────────
+## AUTOSTART + EXTERNAL SERVICES
+## ───────────────────────────────────────────────
+
+# Launch and position key apps
+exec --no-startup-id i3-msg "workspace $ws1; exec firefox"
+exec --no-startup-id i3-msg "workspace $ws4; exec telegram-desktop"
+exec --no-startup-id i3-msg "workspace $ws4; exec discord"
+exec --no-startup-id i3-msg "workspace $ws5; exec steam"
+exec --no-startup-id blueman-manager
+
+# Visuals
+exec_always --no-startup-id ~/.config/polybar/bar_launch.sh
+exec_always --no-startup-id xwallpaper --daemon --zoom $HOME/.config/xwallpaper/wallpaper.jpg
+
+# Keyboard layout
+exec_always "setxkbmap -model pc104 -layout us,ru,ua -variant ,, -option grp:alt_shift_toggle"
+
+# Screen layout
+exec_always --no-startup-id xrandr --output HDMI-1-0 --rotate normal --auto --rate 100.00 --left-of eDP-1
+
+## ───────────────────────────────────────────────
+## WORKSPACE TO MONITOR MAPPING
+## ───────────────────────────────────────────────
+
+workspace $ws1 output HDMI-1-0
+workspace $ws2 output HDMI-1-0
+workspace $ws3 output HDMI-1-0
+workspace $ws4 output eDP-1
+workspace $ws5 output eDP-1
+
+## ───────────────────────────────────────────────
+## APPLICATION ASSIGNMENTS
+## ───────────────────────────────────────────────
+
+assign [class="firefox"] $ws1
+assign [class="telegram-desktop"] $ws4
+assign [class="discord"] $ws4
+assign [class="steam"] $ws5
+
+## ───────────────────────────────────────────────
+## KEYBINDINGS — SYSTEM & APPLICATIONS
+## ───────────────────────────────────────────────
+
+# Restart and terminal
+bindsym $mod+Shift+r restart
+bindsym $mod+Return exec alacritty
+
+# Screenshot
+bindsym $mod+Shift+s exec --no-startup-id flameshot gui
+
+# App launchers
+bindsym $mod+F1 exec --no-startup-id deezer-desktop
+bindsym $mod+F2 exec --no-startup-id telegram
+bindsym $mod+F3 exec --no-startup-id discord
+bindsym $mod+F4 exec --no-startup-id pavucontrol
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
+
+# Brightness
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2
+
+# Volume
+bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -c 0 -q set Master 2dB+ unmute
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -c 0 -q set Master 2db- unmute
+
+# Touchpad toggle
+bindsym XF86TouchpadOn exec --no-startup-id synclient Touchpadoff=0
+bindsym XF86TouchpadOff exec --no-startup-id synclient Touchpadoff=1
+
+## ───────────────────────────────────────────────
+## KEYBINDINGS — WINDOW CONTROL
+## ───────────────────────────────────────────────
+
+# Kill, focus, move
+bindsym $mod+Shift+q kill
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Splits
+bindsym $mod+q split toggle
+bindsym $mod+h split h;exec notify-send 'tile horizontally'
+bindsym $mod+v split v;exec notify-send 'tile vertically'
+
+# Layouts
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+f fullscreen toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+space floating toggle
+#bindsym $mod+Shift+s sticky toggle
+
+## ───────────────────────────────────────────────
+## KEYBINDINGS — RESIZE MODE
+## ───────────────────────────────────────────────
+
+bindsym $mod+r mode "resize"
+mode "resize" {
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+## ───────────────────────────────────────────────
+## KEYBINDINGS — WORKSPACES
+## ───────────────────────────────────────────────
+
+# Switch
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+
+# Move container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
+
+# Next/previous
+bindsym $mod+Ctrl+Right workspace next
+bindsym $mod+Ctrl+Left workspace prev
+
+## ───────────────────────────────────────────────
+## FLOATING WINDOW RULES
+## ───────────────────────────────────────────────
+
+floating_modifier $mod
+
+# Urgent window auto-focus
+for_window [urgent=latest] focus
+
+# Mark specific windows as floating
+for_window [title="QEMU"] floating enable
+for_window [title="htop"] floating enable sticky
+for_window [title="alsamixer"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="GParted"] floating enable border normal
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="Clipgrab"] floating enable
+for_window [window_role="About"] floating enable
+for_window [title="File Transfer*"] floating enable
+for_window [class="(?i)gnome-calculator"] floating enable
+for_window [title="i3_help"] floating enable sticky enable border normal
+for_window [class="Lightdm-gtk-greeter-settings"] floating enable
+for_window [class="(?i)System-config-printer.py"] floating enable border normal
+
