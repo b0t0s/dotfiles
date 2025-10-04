@@ -25,9 +25,9 @@ focus_follows_mouse yes
 new_window pixel 2
 new_float pixel 2
 hide_edge_borders both
-smart_gaps off
-gaps inner 10
-gaps outer 5
+# smart_gaps off
+# gaps inner 10
+# gaps outer 5
 
 # Theme colors
 client.focused          #800000 #bfbfbf #800000 #800000 #800000
